@@ -5,16 +5,34 @@
     <title>Bus Mall</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/styles.css">
+  
   </head>
 
   <body>
-    <section id="allProducts">
-      <img id="left" src="">
-      <img id="center" src="">
-      <img id="right" src="">
+    <section class="intro">
+      <div class="inner">
+        <div class="content">
+          <h1>Bus Mall</h1>
+          <p>Select your favorite item from the 3 shown.  Repeat 25 times.</p>
+          <section id="allProducts">
+            <img id="left" src="">
+            <img id="center" src="">
+            <img id="right" src="">
+          </section>
+          <section id="buttonLinks"></section>
+        </div>
+      </div>
     </section>
 
-    <ul id="stats"></ul>
-    <script src="./js/app.js"></script>
-  </body>
+    <section id="statsContainer">
+      <ul id="stats"></ul>
+    </section>
+
+    <section id="chartContainer">
+      <canvas id="productChart"></canvas>
+    </section>
+
+      <script src="./js/app.js"></script>
+      <script src="./js/Chart.min.js"></script>
+    </body>
 </html>
