@@ -28,8 +28,8 @@ function Product(name, src) {
   Product.allProducts.push(this);
 }
 
-function instantiateProducts () {
-  for(var i = 0; i < allProductNames.length; i++) {
+function instantiateProducts() {
+  for (var i = 0; i < allProductNames.length; i++) {
     new Product(allProductNames[i], allProductSrc[i]);
   }
 }
@@ -52,6 +52,7 @@ function displayProducts() {
   Product.allProducts[Product.checkDupes[0]].timesShown++;
   leftProduct = Product.allProducts[Product.checkDupes[0]];
 
+
   middleImgTag.src = Product.allProducts[Product.checkDupes[1]].src;
   Product.allProducts[Product.checkDupes[1]].timesShown++;
   middleProduct = Product.allProducts[Product.checkDupes[1]];
@@ -63,7 +64,7 @@ function displayProducts() {
   Product.checkDupes = Product.checkDupes.slice(3, 6);
 }
 
-var handleClick = function(event) {
+var handleClick = function (event) {
   if (event.target === productContainer) {
     return alert('click on an image, please');
   }
@@ -74,16 +75,21 @@ var handleClick = function(event) {
   if (id === 'left' || id === 'center' || id === 'right') {
     if (id === 'left') {
       leftProduct.clicks++;
+      console.log(leftProduct);
     }
     if (id === 'center') {
       middleProduct.clicks++;
+      console.log(middleProduct);
+
     }
     if (id === 'right') {
       rightProduct.clicks++;
+      console.log(rightProduct);
+
     }
   }
 
-  if(totalClicks === 25) {
+  if (totalClicks === 25) {
     productContainer.removeEventListener('click', handleClick);
     renderStats();
     renderChart();
@@ -119,7 +125,7 @@ function renderChart() {
   var ctx = document.getElementById('productChart').getContext('2d');
   var votes = [];
   var names = [];
-  for(var i = 0; i < Product.allProducts.length; i++) {
+  for (var i = 0; i < Product.allProducts.length; i++) {
     votes[i] = Product.allProducts[i].clicks;
     names[i] = Product.allProducts[i].name;
   }
