@@ -34,9 +34,6 @@ function instantiateProducts () {
   }
 }
 
-instantiateProducts();
-displayProducts();
-
 function randomNumber() {
   return Math.floor(Math.random() * Product.allProducts.length);
 }
@@ -44,9 +41,11 @@ function randomNumber() {
 function displayProducts() {
   while (Product.checkDupes.length < 6) {
     var number = randomNumber();
+ 
     if (!Product.checkDupes.includes(number)) {
       Product.checkDupes.push(number);
     }
+
   }
   leftImgTag.src = Product.allProducts[Product.checkDupes[0]].src;
   Product.allProducts[Product.checkDupes[0]].timesShown++;
@@ -60,36 +59,9 @@ function displayProducts() {
   Product.allProducts[Product.checkDupes[2]].timesShown++;
   rightProduct = Product.allProducts[Product.checkDupes[2]];
 
+
   Product.checkDupes = Product.checkDupes.slice(3, 6);
 }
-
-var handleClick = function(event) {
-  if (event.target === productContainer) {
-    return alert('click on an image, please');
-  }
-  totalClicks++;
-  console.log('clicked ' + totalClicks);
-  var clickedProduct = event.target;
-  var id = clickedProduct.id;
-  if (id === 'left' || id === 'center' || id === 'right') {
-    if (id === 'left') {
-      leftProduct.clicks++;
-    }
-    if (id === 'center') {
-      middleProduct.clicks++;
-    }
-    if (id === 'right') {
-      rightProduct.clicks++;
-    }
-  }
-
-  if(totalClicks === 25) {
-    productContainer.removeEventListener('click', handleClick);
-    renderStats();
-    renderChart();
-  }
-  displayProducts();
-};
 
 function renderStats() {
   var h1El = document.createElement('h1');
@@ -110,13 +82,19 @@ function renderStats() {
 }
 
 function renderChart() {
+  var canvasEl = document.createElement('canvas');
+  canvasEl.setAttribute = ('id', 'productChart');
+  chartContainer.style.width = '500px';
+  chartContainer.style.height = '500px';
+  chartContainer.appendChild(canvasEl);
+
   var buttonEl = document.createElement('a');
   buttonEl.textContent = 'Chart';
   buttonEl.setAttribute('class', 'btn');
   buttonEl.href = '#chartContainer';
   buttonLinks.appendChild(buttonEl);
 
-  var ctx = document.getElementById('productChart').getContext('2d');
+  var ctx = canvasEl.getContext('2d');
   var votes = [];
   var names = [];
   for(var i = 0; i < Product.allProducts.length; i++) {
@@ -153,5 +131,45 @@ function renderChart() {
     }
   });
 }
+
+function checkStorage () {
+  if(localStorage.setProducts) {
+    var stringifyProducts = localStorage.getItem('setProducts');
+    Product.allProducts = JSON.parse(stringifyProducts);
+  } else {
+    instantiateProducts();
+  }
+}
+
+var handleClick = function(event) {
+  if (event.target === productContainer) {
+    return alert('click on an image, please');
+  }
+  totalClicks++;
+  var clickedProduct = event.target;
+  var id = clickedProduct.id;
+  if (id === 'left' || id === 'center' || id === 'right') {
+    if (id === 'left') {
+      leftProduct.clicks++;
+    }
+    if (id === 'center') {
+      middleProduct.clicks++;
+    }
+    if (id === 'right') {
+      rightProduct.clicks++;
+    }
+  }
+
+  if(totalClicks === 25) {
+    productContainer.removeEventListener('click', handleClick);
+    renderStats();
+    renderChart();
+    localStorage.setItem('setProducts', JSON.stringify(Product.allProducts));
+  }
+  displayProducts();
+};
+
+checkStorage();
+displayProducts();
 
 productContainer.addEventListener('click', handleClick);
